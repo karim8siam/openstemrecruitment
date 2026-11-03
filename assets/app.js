@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const EMAIL='shahriyarkarimsiam@gmail.com';
 // Google Apps Script Web App Endpoint (connects to Google Sheet & Gmail)
-const APPS_SCRIPT_URL=''; // Paste your Google Apps Script Web App URL here
+const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycyGhBPBz77Asi6Y5EB0E0JfY60HNcQ5b_2mzXtTUEa6trCnvmG1Yhv_Gw8Kz1BFrgA/exec';
 
 const menu=document.querySelector('.menu-toggle');const mobile=document.querySelector('#mobile-nav');
 if(menu&&mobile){menu.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')!=='true';menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'Close navigation':'Open navigation');mobile.hidden=!open;});mobile.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation');mobile.hidden=true;}));}
