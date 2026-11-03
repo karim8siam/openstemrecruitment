@@ -1,5 +1,8 @@
 (()=>{'use strict';
 const EMAIL='shahriyarkarimsiam@gmail.com';
+// Google Apps Script Web App Endpoint (connects to Google Sheet & Gmail)
+const APPS_SCRIPT_URL=''; // Paste your Google Apps Script Web App URL here
+
 const menu=document.querySelector('.menu-toggle');const mobile=document.querySelector('#mobile-nav');
 if(menu&&mobile){menu.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')!=='true';menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'Close navigation':'Open navigation');mobile.hidden=!open;});mobile.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation');mobile.hidden=true;}));}
 const year=document.querySelector('#year');if(year)year.textContent=String(new Date().getFullYear());
@@ -10,38 +13,54 @@ if(tabs.length){function activate(which,focus){tabs.forEach(t=>{const chosen=t.d
 function emailPayload(form){const fd=new FormData(form);const type=form.dataset.form;const fields=[...form.querySelectorAll('[name]:not([type="checkbox"]):not([type="hidden"])')];const lines=fields.map(el=>{const label=form.querySelector(`label[for="${el.id}"]`);const name=label?label.textContent.replace('*','').trim():el.name;return `${name}: ${(String(fd.get(el.name)||'').trim()||'Not provided')}`;});const subject=type==='student'?'OpenSTEM Recruitment — Student study enquiry':'OpenSTEM Recruitment — Prospective university partnership enquiry';return{subject,body:`Hello OpenSTEM Recruitment,\n\n${type==='student'?'I would like to ask about study and academic pathways.':'I represent an institution and would like to discuss a prospective partnership.'}\n\n${lines.join('\n')}\n\nI understand this message is only an enquiry, not an application, university agreement or outcome guarantee.\n\nKind regards,\n${String(fd.get('name')||'').trim()}`};}
 function showStatus(form,txt,variant=''){const el=form.querySelector('.form-status');if(!el)return;el.textContent=txt;el.className='form-status'+(variant?' is-'+variant:'');}
 async function copyText(s){if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(s);return;}const textarea=document.createElement('textarea');textarea.value=s;textarea.style.cssText='position:fixed;left:-10000px;top:0';document.body.append(textarea);textarea.select();let ok=false;try{ok=document.execCommand('copy');}finally{textarea.remove();}if(!ok)throw Error('Clipboard unavailable');}
+
 document.querySelectorAll('.enquiry-form').forEach(form=>{
   const submitBtn=form.querySelector('button[type="submit"]');
   const originalBtnText=submitBtn?submitBtn.textContent:'Send enquiry →';
   form.addEventListener('submit',async e=>{
     e.preventDefault();
     if(!form.reportValidity())return;
-    if(submitBtn){submitBtn.disabled=true;submitBtn.textContent='Sending to '+EMAIL+'...';}
-    showStatus(form,'Connecting and sending enquiry to '+EMAIL+'...','info');
+    if(submitBtn){submitBtn.disabled=true;submitBtn.textContent='Saving & sending...';}
+    showStatus(form,'Saving enquiry to Google Sheets and sending notification to '+EMAIL+'...','info');
     const fd=new FormData(form);
-    const data={};
+    const data={form_type:form.dataset.form};
     fd.forEach((value,key)=>{if(key!=='consent')data[key]=value;});
+
     try{
-      const response=await fetch(`https://formsubmit.co/ajax/${EMAIL}`,{
-        method:'POST',
-        headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body:JSON.stringify(data)
-      });
-      const result=await response.json();
-      if(response.ok&&(result.success===true||result.success==='true')){
-        showStatus(form,'✓ Enquiry sent successfully! An email has been delivered to '+EMAIL+'. We will reply to your email address soon.','success');
+      if(APPS_SCRIPT_URL&&APPS_SCRIPT_URL.startsWith('http')){
+        // Send to Google Apps Script (Saves to Google Sheet & sends email)
+        await fetch(APPS_SCRIPT_URL,{
+          method:'POST',
+          mode:'no-cors',
+          headers:{'Content-Type':'text/plain;charset=utf-8'},
+          body:JSON.stringify(data)
+        });
+        showStatus(form,'✓ Enquiry saved to Google Sheet and emailed directly to '+EMAIL+'. We will reply soon!','success');
         form.reset();
       }else{
-        throw new Error(result.message||'Direct submission failed');
+        // Direct delivery fallback via FormSubmit to shahriyarkarimsiam@gmail.com
+        const response=await fetch(`https://formsubmit.co/ajax/${EMAIL}`,{
+          method:'POST',
+          headers:{'Content-Type':'application/json','Accept':'application/json'},
+          body:JSON.stringify(data)
+        });
+        const result=await response.json();
+        if(response.ok&&(result.success===true||result.success==='true')){
+          showStatus(form,'✓ Enquiry sent successfully! An email has been delivered to '+EMAIL+'. We will reply soon.','success');
+          form.reset();
+        }else{
+          throw new Error(result.message||'Direct submission failed');
+        }
       }
     }catch(err){
       const{subject,body}=emailPayload(form);
-      showStatus(form,'Direct send was interrupted. Opening draft in your email app instead...','warning');
+      showStatus(form,'Direct connection was interrupted. Opening draft in your email app instead...','warning');
       window.location.href=`mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     }finally{
       if(submitBtn){submitBtn.disabled=false;submitBtn.textContent=originalBtnText;}
     }
   });
+
   form.querySelector('.gmail-btn')?.addEventListener('click',()=>{
     if(!form.reportValidity())return;
     const{subject,body}=emailPayload(form);
@@ -49,6 +68,7 @@ document.querySelectorAll('.enquiry-form').forEach(form=>{
     window.open(gmailUrl,'_blank','noopener,noreferrer');
     showStatus(form,'Opened a draft in Gmail addressed to '+EMAIL+'. Please review and click Send.','info');
   });
+
   form.querySelector('.copy-btn')?.addEventListener('click',async()=>{
     if(!form.reportValidity())return;
     const{subject,body}=emailPayload(form);
