@@ -1,0 +1,8 @@
+.git
+.gitignore
+.github
+Dockerfile
+README.md
+START_HERE.md
+*.zip
+.DS_Store

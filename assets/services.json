@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "title": "Initial study conversation",
+    "category": "discover",
+    "description": "Clarify your goals, study level, time frame and budget before choosing a direction."
+  },
+  {
+    "id": 2,
+    "title": "Academic eligibility review",
+    "category": "discover",
+    "description": "Compare your qualifications with current, official course entry requirements."
+  },
+  {
+    "id": 3,
+    "title": "Scholarship & funding discovery",
+    "category": "discover",
+    "description": "Find published funding opportunities and examine eligibility, coverage and deadlines."
+  },
+  {
+    "id": 4,
+    "title": "University & program shortlisting",
+    "category": "discover",
+    "description": "Compare subject fit, accreditation where applicable, realistic costs and application rules."
+  },
+  {
+    "id": 5,
+    "title": "Research opportunity discovery",
+    "category": "connect",
+    "description": "Explore published funded PhD and research roles through legitimate sources."
+  },
+  {
+    "id": 6,
+    "title": "Professor & research group research",
+    "category": "connect",
+    "description": "Identify research interests and prepare evidence-based, respectful academic outreach."
+  },
+  {
+    "id": 7,
+    "title": "Academic CV & statement feedback",
+    "category": "prepare",
+    "description": "Improve the structure and clarity of your own CV, statement of purpose or research proposal."
+  },
+  {
+    "id": 8,
+    "title": "Application planning & checks",
+    "category": "prepare",
+    "description": "Organize documents, official requirements and deadlines to reduce avoidable mistakes."
+  },
+  {
+    "id": 9,
+    "title": "Research-readiness planning",
+    "category": "prepare",
+    "description": "Identify research methods, subject knowledge and project skills worth strengthening."
+  },
+  {
+    "id": 10,
+    "title": "Academic portfolio guidance",
+    "category": "prepare",
+    "description": "Present genuine projects, methods, code and academic work clearly."
+  },
+  {
+    "id": 11,
+    "title": "Interview practice",
+    "category": "prepare",
+    "description": "Prepare to explain your academic motivations and experiences accurately."
+  },
+  {
+    "id": 12,
+    "title": "Student workshops & explainers",
+    "category": "prepare",
+    "description": "Discuss application, funding and academic preparation topics in structured sessions."
+  },
+  {
+    "id": 13,
+    "title": "Peer-learning community",
+    "category": "connect",
+    "description": "Explore study discussions and academic collaboration through the wider OpenSTEM community."
+  },
+  {
+    "id": 14,
+    "title": "Pre-departure information",
+    "category": "transition",
+    "description": "Locate official enrolment and arrival information; seek regulated advice where required."
+  }
+]
