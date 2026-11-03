@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://recruitment.openstem.org/sitemap.xml
+Sitemap: https://openstemrecruitment.com/sitemap.xml
