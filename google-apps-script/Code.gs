@@ -184,6 +184,20 @@ function doPost(e) {
   }
 }
 
+function testSendEmailAndSheet() {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const sheet = ss.getSheetByName("Student Enquiries");
+  sheet.appendRow([new Date(), "Test Student", "test@openstemrecruitment.com", "Postgraduate", "Artificial Intelligence", "Verification test from Apps Script."]);
+  
+  MailApp.sendEmail({
+    to: NOTIFICATION_EMAIL,
+    replyTo: "test@openstemrecruitment.com",
+    subject: "[Test Enquiry] System Verification",
+    htmlBody: "<h3>OpenSTEM Recruitment Test</h3><p>Your Google Apps Script and Gmail integration are connected successfully!</p>"
+  });
+  Logger.log("Successfully appended row to Google Sheet and dispatched test email to " + NOTIFICATION_EMAIL);
+}
+
 function escapeHtml(text) {
   if (!text) return "";
   return String(text)
