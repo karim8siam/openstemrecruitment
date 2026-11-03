@@ -121,6 +121,7 @@ Both forms (Student Enquiry & University Enquiry) submit directly to **`shahriya
 - OpenSTEM Field — https://openstemfield.org/
 - OpenSTEM Tool — https://openstemtool.org/
 - OpenSTEM Replicate — https://openstemreplicate.org/
+- OpenSTEM Bridge — https://www.openstembridge.space/
 - Community — https://discord.gg/tBBKtvFJzW
 - Contact — mailto:shahriyarkarimsiam@gmail.com
 
